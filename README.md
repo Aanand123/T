@@ -1,32 +1,52 @@
-<p align='center'><img style="height:100px;width:100px" src="icon.png" ></p>
+# Multi-Bot Telegram Platform (Telegraf + Express + MongoDB + Redis)
 
-<h2 align='center'>Track Down people by just using a link.</h2>
+Production-grade scaffold for a **multi-bot Telegram system** with a centralized dark-themed admin panel.
 
-<div align="center">
+## Features
+- Multi-bot lifecycle management (add / remove / enable / disable)
+- Webhook-based Telegraf runtime (no polling)
+- Force-join flow with channel verification via `getChatMember`
+- Referral + invite progression + leaderboard
+- FIFO agent/phone assignment with duplicate-claim protection
+- Message editor stored in DB, hot-applied
+- Broadcast with BullMQ queue + real-time progress (SSE)
+- JWT admin authentication
+- Modular architecture ready for horizontal scaling
 
-[![https://telegram.me/th30neand0nly0ne](https://img.shields.io/badge/Telegram-Channel-orange.svg?style=flat-square)](https://telegram.me/th30neand0nly0ne)
-[![https://telegram.me/th30neand0nly](https://img.shields.io/badge/Telegram-@th30neand0nly-blue.svg?style=flat-square)](https://telegram.me/th30neand0nly)
+## Stack
+- **Bot Runtime:** Node.js + Telegraf
+- **Admin API/UI:** Express + Vanilla HTML/CSS/JS (dark responsive cards)
+- **DB:** MongoDB (Mongoose)
+- **Queue/Cache:** Redis + BullMQ
 
-</div>
+## Quick Start
+1. Create `.env`:
+```env
+PORT=5000
+BASE_URL=https://your-domain.com
+MONGODB_URI=mongodb://127.0.0.1:27017/multi_bot_platform
+REDIS_URL=redis://127.0.0.1:6379
+JWT_SECRET=change-this
+ADMIN_USER=admin
+ADMIN_PASS=strong-password
+WEBHOOK_SECRET=another-secret
+```
+2. Install dependencies:
+```bash
+npm install
+```
+3. Start server:
+```bash
+npm start
+```
+4. Open admin panel:
+```
+http://localhost:5000/admin
+```
 
-This tool is based upon [Psi](https://github.com/Th30neAnd0nly/Psi) .This is a telegram implementation with extra features than Psi.
-### Try it at [@TrackDownRoBot](https://t.me/TrackDownRoBot)
-
-
-[![Run on Repl.it](https://repl.it/badge/github/Th30neAnd0nly/TrackDown)](https://repl.it/github/Th30neAnd0nly/TrackDown)
- 
-#### Video Tutorial 
-
-[![Video Tutorial](https://github.com/Th30neAnd0nly/TrackDown/blob/main/vid.png)](https://github.com/Th30neAnd0nly/TrackDown/blob/main/vid.mp4?raw=true)
- 
-
-### How to build
-1. Create a telegram bot through [BotFather](https://t.me/BotFather).
-1. Copy it's API key
-1. Clone the repo using `git clone https://github.com/Th30neAnd0nly/TrackDown`
-1. `cd TrackDown`
-1. Create a environment variable in `.env` file named `bot` and put your telegram bot token as it's value.
-1. Replace your website URL at [index.js](https://github.com/Th30neAnd0nly/TrackDown/blob/8d2b963bc96d34282589d47240a9db56b5ce79f5/index.js#L15)
-1. Run `npm install`
-1. Afterwards `npm start`
-1. Your Bot is now online.
+## Production Notes
+- Put behind reverse proxy (Nginx/Traefik) with TLS.
+- Ensure Telegram webhook endpoint is publicly reachable at `BASE_URL`.
+- Use Redis cluster and Mongo replica set for high throughput.
+- Scale horizontally: multiple app instances sharing Mongo + Redis.
+- Add rate-limiter and audit logs in front of admin APIs.
